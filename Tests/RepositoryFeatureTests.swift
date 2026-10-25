@@ -420,6 +420,8 @@ enum RepositoryFeatureTests {
                "deleting a name the user added drops it from the switched off names too: \(siteSwitch.disabledNames)")
         expectEqual(URLCleaning.siteKey(from: " https://WWW.Weibo.com/path?x=1 ") ?? "",
                     "weibo.com", "the site field takes a pasted link and keeps the host")
+        expectEqual(URLCleaning.siteKey(from: "https://user@Shop.Example.com:8080/x") ?? "",
+                    "shop.example.com", "a pasted link's port and login do not become part of the host key")
         suite.expect(URLCleaning.siteKey(from: "not a host") == nil,
                "text that is not a host is refused rather than stored")
         expectEqual(URLCleaning.parameterName(from: " Ref ") ?? "", "ref",
