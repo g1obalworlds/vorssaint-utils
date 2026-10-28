@@ -233,7 +233,11 @@ enum URLCleaning {
         if let login = value.lastIndex(of: "@") {
             value = String(value[value.index(after: login)...])
         }
-        if let port = value.firstIndex(of: ":") {
+        // Colons inside a bracketed IPv6 host belong to the address.
+        let portSearchStart = value.hasPrefix("[")
+            ? value.firstIndex(of: "]") ?? value.endIndex
+            : value.startIndex
+        if let port = value[portSearchStart...].firstIndex(of: ":") {
             value = String(value[..<port])
         }
         if value.hasPrefix("www.") {
